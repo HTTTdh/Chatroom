@@ -3,11 +3,13 @@ import { useAuth } from "../../hooks/useAuth";
 import { JoinedRooms } from "../JoinedRooms/joined-rooms";
 import { useForm } from "react-hook-form";
 import { BsEmojiSmileFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import Picker from "emoji-picker-react";
 import { useStompClient } from "../../context/StompClientContext";
 import "./Form.css";
 import { API } from "../../ipConfig";
 const Form = () => {
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [membersId, setMembersId] = useState([]);
   const [membersEmail, setMemberEmail] = useState([]);
@@ -40,6 +42,8 @@ const Form = () => {
 
     if (res.ok) {
       const savedMessage = await res.json();
+      // navigate(`/chat/${roomId}`);
+      navigate(0);
       console.log(savedMessage);
     } else {
       console.error("Error sending message:", res.statusText);

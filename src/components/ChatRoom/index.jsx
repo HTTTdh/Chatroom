@@ -8,6 +8,8 @@ import "./styles.css";
 import Sidebar from "../components/Sidebar";
 import Form from "../components/Form";
 import { API } from "../../ipConfig";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 function ChatRoom() {
   const { stompClient } = useStompClient();
   const info = useAuth();
@@ -127,12 +129,16 @@ function ChatRoom() {
 
         if (addMemberResponse.ok) {
           alert("Member added successfully:", JSON.stringify(jsonResponse));
+          closeOverlay();
+          navigate(`/chat/${roomId}`);
         } else {
           alert("Failed to add member:", jsonResponse);
         }
       } else {
         if (addMemberResponse.ok) {
           alert("Member added successfully. Response:", rawResponseText);
+          closeOverlay();
+          navigate(`/chat/${roomId}`);
         } else {
           alert("Failed to add member. Response:", rawResponseText);
         }
@@ -188,18 +194,23 @@ function ChatRoom() {
 
   const handleCopyLink = () => {
     const link = window.location.href;
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        setLinkCopied(true);
-        console.log("Đã sao chép liên kết: " + link);
-        setTimeout(() => setLinkCopied(false), 2000);
-      })
-      .catch((err) => {
-        console.error("Lỗi sao chép liên kết", err);
-      });
-    closeFrame();
+    const textArea = document.createElement("textarea");
+    textArea.value = link;
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    try {
+      document.execCommand("copy");
+      setLinkCopied(true);
+      console.log("Đã sao chép liên kết: " + link);
+      setTimeout(() => setLinkCopied(false), 2000);
+    } catch (err) {
+      console.error("Lỗi sao chép liên kết: ", err);
+    }
+
+    document.body.removeChild(textArea);
   };
+
   const addMessage = (newMessage) => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
@@ -251,43 +262,85 @@ function ChatRoom() {
             </div>
           </div>
           {isOverlayVisible && (
-            <div className="overlay-message">
-              <div className="overlay-message-content">
-                <div className="search">
-                  <input
-                    type="text"
-                    value={currentMemberEmail}
-                    onChange={(e) => setCurrentEmail(e.target.value)}
-                    placeholder="Nhập email"
-                    className="input-mail"
-                  />
-                  <button onClick={handleAddMemberByEmail}>Thêm</button>
-                </div>
-                <div className="list-mail">
-                  <ul style={{ listStyleType: "none" }}>
-                    {membersEmail.map((email, index) => (
-                      <li key={index} className="email-item">
-                        {email}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <button onClick={closeOverlay}>Đóng</button>
+            <div
+              className="overlay-message"
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                position: "fixed",
+                top: "0",
+                left: "0",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <div
+                className="overlay-message-content"
+                style={{
+                  maxWidth: "400px",
+                  margin: "10% auto",
+                  padding: "20px",
+                  backgroundColor: "#fff",
+                  borderRadius: "10px",
+                  position: "relative",
+                }}
+              >
+                {/* Nút đóng ở góc trên bên phải */}
+                <button
+                  onClick={closeOverlay}
+                  className="btn-close"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    background: "none",
+                    border: "none",
+                    fontSize: "1.5rem",
+                    color: "#000",
+                  }}
+                >
+                  ×
+                </button>
+
+                <h4 className="text-center mb-4">Nhập Email Thành Viên</h4>
+                <form>
+                  <div className="mb-3">
+                    <input
+                      type="email"
+                      className="form-control"
+                      value={currentMemberEmail}
+                      onChange={(e) => setCurrentEmail(e.target.value)}
+                      placeholder="Nhập email"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary w-100 mb-3"
+                    onClick={handleAddMemberByEmail}
+                  >
+                    Thêm
+                  </button>
+                </form>
+
+                <ul className="list-group mb-3">
+                  {membersEmail.map((email, index) => (
+                    <li
+                      key={index}
+                      className="list-group-item d-flex justify-content-between align-items-center"
+                    >
+                      {email}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           )}
+
           {linkCopied && (
             <div className="copied-notification">
               Liên kết đã được sao chép!
             </div>
           )}
-          {/* <div
-            style={{
-              border: "1px solid #fff",
-              borderRadius: "10px",
-              boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
-            }}
-          ></div> */}
           <MessageList roomId={roomId} userId={info.user.uid}></MessageList>
           <MessageInput roomId={roomId} addMessage={addMessage}></MessageInput>
         </div>

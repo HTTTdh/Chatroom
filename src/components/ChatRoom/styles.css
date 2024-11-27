@@ -174,7 +174,6 @@ button:hover {
 
 .copied-notification {
   position: fixed;
-  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #4caf50;

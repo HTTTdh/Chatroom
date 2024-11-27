@@ -24,7 +24,7 @@ function JoinedRooms({ userId }) {
 
     noti.forEach(async (notification) => {
       if (notification.chatRoomId === roomId) {
-        const url = `http://localhost:8080/markAsRead/${notification.notificationId}`;
+        const url = `${API}markAsRead/${notification.notificationId}`;
         await fetch(url);
       }
     });

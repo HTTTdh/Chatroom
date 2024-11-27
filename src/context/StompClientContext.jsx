@@ -2,6 +2,8 @@ import { createContext, useContext } from "react";
 import { useState, useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import { useAuth } from "../hooks/useAuth";
+import { API } from "../ipConfig";
+
 const StompClientContext = createContext();
 import { WS } from "../ipConfig";
 export const StompClientProvider = ({ children }) => {
@@ -13,8 +15,7 @@ export const StompClientProvider = ({ children }) => {
 
   async function fetchChatNoti(userId) {
     const response = await fetch(
-      "http://localhost:8080/getLatestNotificationsByChatRoomIdAndUserId/" +
-        userId
+      `${API}getLatestNotificationsByChatRoomIdAndUserId/` + userId
     );
     const data = await response.json();
 

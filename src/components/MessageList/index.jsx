@@ -2,8 +2,10 @@ import { useMessages } from "../../hooks/useMessages";
 import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import "./styles.css";
 import { API } from "../../ipConfig";
+import { useNavigate } from "react-router-dom";
 function MessageList({ roomId, userId }) {
   const messages = useMessages(roomId);
+  const navigate = useNavigate();
   const containerRef = React.useRef(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [linkToNavigate, setLinkToNavigate] = useState("");
@@ -78,8 +80,8 @@ function MessageList({ roomId, userId }) {
     );
   };
   const handleLinkClick = (linkk) => {
-    console.log("Link clicked: ", linkk); // Kiểm tra link khi nhấp
-    setLinkToNavigate(linkk); // Lưu link vào state
+    console.log("Link clicked: ", linkk);
+    setLinkToNavigate(linkk);
     setShowConfirmation(true);
   };
 
@@ -105,6 +107,7 @@ function MessageList({ roomId, userId }) {
 
       if (addMemberResponse.ok) {
         alert("Member added successfully ");
+        navigate(`/chat/${room}`);
       } else {
         alert("Failed to add member.");
       }

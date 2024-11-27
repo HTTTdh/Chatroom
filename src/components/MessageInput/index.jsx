@@ -26,6 +26,8 @@ function MessageInput({ roomId }) {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    let url = "";
+
     if (roomId.startsWith("pr")) {
       const parts = roomId.slice(2).split("_");
       const receiverId = parts.find((id) => id !== user.uid);
@@ -37,20 +39,25 @@ function MessageInput({ roomId }) {
         formData.append("file", image);
       }
     } else {
+      url = `${API}sendMessageToRoom`;
       formData.append("chatRoomId", roomId);
       formData.append("senderId", user.uid);
       formData.append("content", typing);
       if (image) {
         formData.append("file", image);
       }
-      var url = `${API}sendMessageToRoom`;
     }
 
     const res = await fetch(url, {
       method: "POST",
       body: formData,
     });
-
+    if (res.ok) {
+      console.log("Message sent successfully!");
+    } else {
+      const errorData = await res.json();
+      console.error("Error sending message:", errorData);
+    }
     setTyping("");
     setImage(null);
     setImagePreview(null);

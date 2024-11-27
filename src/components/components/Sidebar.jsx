@@ -13,6 +13,8 @@ function Sidebar({ info }) {
   const [membersEmail, setMemberEmail] = useState([]);
   const [groupAvatar, setGroupAvatar] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate();
+
   const { onCreateRoom } = useRooms(info.user.uid);
 
   const handleAddMemberByEmail = async () => {
@@ -62,7 +64,7 @@ function Sidebar({ info }) {
     if (result) {
       alert("Room created successfully!");
       closeOverlay();
-      window.location.reload();
+      navigate(0);
     } else {
       alert("Error creating room. Please try again later.");
     }
