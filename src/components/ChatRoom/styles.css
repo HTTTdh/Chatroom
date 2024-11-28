@@ -70,42 +70,41 @@ button {
 }
 
 .Frame {
-  position: absolute;
-  top: 50px; /* Adjusts position relative to the container */
-  right: 0;
-  width: 200px;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  padding: 10px;
-  z-index: 1000; /* Ensures it's on top of other elements */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  transition: transform 0.3s ease-in-out;
+  text-align: center;
+}
+
+.Frame:hover {
+  transform: translateY(-5px);
 }
 
 .Frame-item {
-  display: flex;
-  flex-direction: column;
+  margin: 10px 0;
 }
 
-.Frame-item .item {
-  padding: 10px;
+.blockquote {
+  margin: 15px 0;
   cursor: pointer;
-  border-bottom: 1px solid #ddd;
+  color: #333333;
+  transition: color 0.3s ease;
 }
 
-.Frame-item .item:last-child {
-  border-bottom: none;
+.blockquote:hover {
+  color: #007bff;
 }
 
-.Frame-item .item:hover {
-  background-color: #f0f0f0;
-}
-
-.Frame-item .item b {
+.item {
+  font-size: 16px;
   font-weight: bold;
 }
 
-.Frame-item .item:active {
-  background-color: #e0e0e0;
+.item:hover {
+  text-decoration: underline;
 }
 
 .overlay-message {

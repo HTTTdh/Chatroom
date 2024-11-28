@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function ChatRoom() {
   const { stompClient } = useStompClient();
   const info = useAuth();
+  const userID = info.user.uid;
   const [messages, setMessages] = useState([]);
   const [isframe, setFrame] = useState(false);
   const roomId = useParams()["roomId"];
@@ -78,6 +79,33 @@ function ChatRoom() {
     console.log("sadd");
     fetchRoomData();
   }, [roomId]);
+
+  const handleLeaveGroup = async () => {
+    try {
+      const url = `${API}leaveChatRoom/${roomId}?userId=${userID}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Request URL:", url);
+
+      const result = await response.text();
+      if (response.ok) {
+        alert("Đã rời khỏi nhóm thành công!");
+        navigate("/");
+      } else {
+        alert(result || "Có lỗi xảy ra.");
+      }
+    } catch (error) {
+      console.error("Lỗi:", error);
+      alert("Không thể kết nối tới server.");
+    }
+  };
+
   const handleAddMemberByEmail = async () => {
     try {
       const response = await fetch(
@@ -230,7 +258,6 @@ function ChatRoom() {
             <img src={avatar} alt="avatar" className="imagine"></img>
             <h3>{name}</h3>
             <div className="group-items">
-              {/* <h3 className="name"> {roomId.roomName}</h3> */}
               <div className="icons">
                 <img src="/phone.png" alt=""></img>
                 <img src="/face.png" alt=" "></img>
@@ -246,15 +273,52 @@ function ChatRoom() {
                 >
                   <img src="/detail.png" alt=""></img>
                 </button>
+                {/* {isframe && (
+                  <div className="Frame" ref={frameRef}>
+                    <div className="Frame-item">
+                      <figure class="text-center">
+                        <blockquote class="blockquote">
+                          <b>Thông tin phòng chat </b>
+                        </blockquote>
+                        <blockquote
+                          class="blockquote"
+                          onClick={handleAddMember}
+                        >
+                          <b className="item">Thêm thành viên mới</b>
+                        </blockquote>
+                        <blockquote class="blockquote" onClick={handleCopyLink}>
+                          <b className="item">Sao chép liên kết</b>
+                        </blockquote>
+                      </figure>
+                    </div>
+                  </div>
+                )} */}
                 {isframe && (
                   <div className="Frame" ref={frameRef}>
                     <div className="Frame-item">
-                      <div className="item" onClick={handleAddMember}>
-                        <b>Thêm thành viên mới</b>
-                      </div>
-                      <div className="item" onClick={handleCopyLink}>
-                        <b>Sao chép liên kết</b>
-                      </div>
+                      <figure className="text-center">
+                        <blockquote className="blockquote">
+                          <b>Thông tin phòng chat</b>
+                        </blockquote>
+                        <blockquote
+                          className="blockquote"
+                          onClick={handleAddMember}
+                        >
+                          <b className="item">Thêm thành viên mới</b>
+                        </blockquote>
+                        <blockquote
+                          className="blockquote"
+                          onClick={handleCopyLink}
+                        >
+                          <b className="item">Sao chép liên kết</b>
+                        </blockquote>
+                        <blockquote
+                          className="blockquote"
+                          onClick={handleLeaveGroup}
+                        >
+                          <b className="item">Rời khỏi nhóm</b>
+                        </blockquote>
+                      </figure>
                     </div>
                   </div>
                 )}
@@ -284,7 +348,6 @@ function ChatRoom() {
                   position: "relative",
                 }}
               >
-                {/* Nút đóng ở góc trên bên phải */}
                 <button
                   onClick={closeOverlay}
                   className="btn-close"
