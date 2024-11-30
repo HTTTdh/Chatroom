@@ -55,7 +55,7 @@
   align-items: center;
 }
 
-.group-title .icons img {
+.group-title .icons .img {
   margin-right: 10px;
   cursor: pointer;
   height: 1rem;
@@ -70,41 +70,93 @@ button {
 }
 
 .Frame {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  width: 300px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  padding: 20px;
+  z-index: 1000;
   transition: transform 0.3s ease-in-out;
-  text-align: center;
-}
-
-.Frame:hover {
-  transform: translateY(-5px);
-}
-
-.Frame-item {
-  margin: 10px 0;
 }
 
 .blockquote {
+  font-size: 20px;
   margin: 15px 0;
-  cursor: pointer;
-  color: #333333;
-  transition: color 0.3s ease;
+  font-weight: 700;
+  color: #333;
 }
 
-.blockquote:hover {
+.Frame-item h3 {
+  font-size: 18px;
+  margin: 5px 0;
+  font-weight: 600;
+  color: #333;
+}
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.links {
   color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.item {
-  font-size: 16px;
-  font-weight: bold;
+.links:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateY(-3px);
+  text-decoration: none;
 }
 
-.item:hover {
+.links:active {
+  transform: translateY(0);
+}
+.group-actions button {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.group-actions button:hover {
+  opacity: 0.8;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-link {
+  color: #007bff;
+  background: none;
+  border: none;
+}
+
+.btn-link:hover {
+  color: #0056b3;
   text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
 }
 
 .overlay-message {
@@ -185,7 +237,13 @@ button:hover {
 .copied-notification {
   animation: fadeIn 0.5s ease-in-out;
 }
-
+/* .avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+} */
 @keyframes fadeIn {
   0% {
     opacity: 0;

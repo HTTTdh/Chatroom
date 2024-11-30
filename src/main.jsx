@@ -5,17 +5,19 @@ import App from "./App";
 import { AuthContext, AuthProvider } from "./Context/AuthContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChatRoom from "./components/ChatRoom/index";
+import Profile from "./components/MyProfile/profile";
 import { StompClientProvider } from "./context/StompClientContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
       <AuthProvider>
-      <StompClientProvider>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/chat/:roomId" element={<ChatRoom />} />
-        </Routes>
+        <StompClientProvider>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/chat/:roomId" element={<ChatRoom />} />
+            <Route path="/myprofile" element={<Profile />} />
+          </Routes>
         </StompClientProvider>
       </AuthProvider>
     </Router>

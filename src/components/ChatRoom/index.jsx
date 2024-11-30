@@ -259,8 +259,8 @@ function ChatRoom() {
             <h3>{name}</h3>
             <div className="group-items">
               <div className="icons">
-                <img src="/phone.png" alt=""></img>
-                <img src="/face.png" alt=" "></img>
+                <img src="/phone.png" alt="" className="img"></img>
+                <img src="/face.png" alt=" " className="img"></img>
                 <button
                   style={{
                     backgroundColor: "transparent",
@@ -271,54 +271,32 @@ function ChatRoom() {
                   ref={buttonRef}
                   onClick={openFrame}
                 >
-                  <img src="/detail.png" alt=""></img>
+                  <img src="/detail.png" alt="" className="img"></img>
                 </button>
-                {/* {isframe && (
-                  <div className="Frame" ref={frameRef}>
-                    <div className="Frame-item">
-                      <figure class="text-center">
-                        <blockquote class="blockquote">
-                          <b>Thông tin phòng chat </b>
-                        </blockquote>
-                        <blockquote
-                          class="blockquote"
-                          onClick={handleAddMember}
-                        >
-                          <b className="item">Thêm thành viên mới</b>
-                        </blockquote>
-                        <blockquote class="blockquote" onClick={handleCopyLink}>
-                          <b className="item">Sao chép liên kết</b>
-                        </blockquote>
-                      </figure>
-                    </div>
-                  </div>
-                )} */}
                 {isframe && (
                   <div className="Frame" ref={frameRef}>
                     <div className="Frame-item">
-                      <figure className="text-center">
-                        <blockquote className="blockquote">
+                      <div className="text-center">
+                        <div className="blockquote">
                           <b>Thông tin phòng chat</b>
-                        </blockquote>
-                        <blockquote
-                          className="blockquote"
-                          onClick={handleAddMember}
-                        >
-                          <b className="item">Thêm thành viên mới</b>
-                        </blockquote>
-                        <blockquote
-                          className="blockquote"
-                          onClick={handleCopyLink}
-                        >
-                          <b className="item">Sao chép liên kết</b>
-                        </blockquote>
-                        <blockquote
-                          className="blockquote"
-                          onClick={handleLeaveGroup}
-                        >
-                          <b className="item">Rời khỏi nhóm</b>
-                        </blockquote>
-                      </figure>
+                          <br />
+                          <img
+                            src={avatar}
+                            alt="avatar"
+                            className="avatar"
+                          ></img>
+                          <h3>{name}</h3>
+                        </div>
+                        <div className="blockquote" onClick={handleAddMember}>
+                          <b className="links">Thêm thành viên mới</b>
+                        </div>
+                        <div className="blockquote" onClick={handleCopyLink}>
+                          <b className="links">Sao chép liên kết</b>
+                        </div>
+                        <div className="blockquote" onClick={handleLeaveGroup}>
+                          <b className="links">Rời khỏi nhóm</b>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}

@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../ipConfig";
 function Sidebar({ info }) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const [isOverlayOpen, setOverlayOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
   const [currentMemberEmail, setCurrentMemberEmail] = useState("");
@@ -15,7 +15,7 @@ function Sidebar({ info }) {
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
 
-  const { onCreateRoom } = useRooms(info.user.uid);
+  const { onCreateRoom } = useRooms(user.uid);
 
   const handleAddMemberByEmail = async () => {
     try {
@@ -82,6 +82,12 @@ function Sidebar({ info }) {
     setMemberEmail([]);
   };
 
+  const handleMyProfile = () => {
+    navigate("/myprofile");
+  };
+  const handleChat = () => {
+    navigate("/");
+  };
   return (
     <div className="sidebar">
       <div className="sidebar-item">
@@ -98,7 +104,7 @@ function Sidebar({ info }) {
       </div>
       <div style={{ border: "1px solid #ccc" }}></div>
       <div className="sidebar-item">
-        <button>
+        <button onClick={handleChat}>
           <i
             class="far fa-comment"
             style={{ fontSize: "16px", color: "white" }}
@@ -117,7 +123,7 @@ function Sidebar({ info }) {
         </button>
       </div>
       <div className="sidebar-item">
-        <button>
+        <button onClick={handleMyProfile}>
           <i
             class="far fa-edit"
             style={{ fontSize: "16px", color: "white" }}
@@ -200,10 +206,7 @@ function Sidebar({ info }) {
       )}
 
       <div className="sidebar-item">
-        <button
-          onClick={logout}
-          style={{ background: "none", border: "none", cursor: "pointer" }}
-        >
+        <button onClick={logout}>
           <i
             className="fas fa-sign-out-alt"
             style={{ fontSize: "16px", color: "white" }}
@@ -211,6 +214,15 @@ function Sidebar({ info }) {
           <p className="logoText">Đăng xuất</p>
         </button>
       </div>
+      {/* <div className="sidebar-item">
+        <button onClick={handleMyProfile}>
+          <i
+            className="fas fa-user-alt"
+            style={{ fontSize: "16px", color: "white" }}
+          ></i>
+          <p className="logoText">Tôi </p>
+        </button>
+      </div> */}
     </div>
   );
 }
