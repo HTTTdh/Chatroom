@@ -9,7 +9,8 @@ import Sidebar from "../components/Sidebar";
 import Form from "../components/Form";
 import { API } from "../../ipConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function ChatRoom() {
   const { stompClient } = useStompClient();
   const info = useAuth();
@@ -95,14 +96,14 @@ function ChatRoom() {
 
       const result = await response.text();
       if (response.ok) {
-        alert("Đã rời khỏi nhóm thành công!");
+        toast.success("Đã rời khỏi nhóm thành công!");
         navigate("/");
       } else {
-        alert(result || "Có lỗi xảy ra.");
+        toast.error(result || "Có lỗi xảy ra.");
       }
     } catch (error) {
       console.error("Lỗi:", error);
-      alert("Không thể kết nối tới server.");
+      toast.error("Không thể kết nối tới server.");
     }
   };
 
@@ -123,7 +124,7 @@ function ChatRoom() {
           setMembersId([...membersId, memberId]);
         }
       } else {
-        alert("User not found.");
+        toast.error("User not found.");
       }
 
       // Check if the user data exists
@@ -156,19 +157,25 @@ function ChatRoom() {
         const jsonResponse = JSON.parse(rawResponseText);
 
         if (addMemberResponse.ok) {
-          alert("Member added successfully:", JSON.stringify(jsonResponse));
+          toast.success(
+            "Member added successfully:",
+            JSON.stringify(jsonResponse)
+          );
           closeOverlay();
           navigate(`/chat/${roomId}`);
         } else {
-          alert("Failed to add member:", jsonResponse);
+          toast.error("Failed to add member:", jsonResponse);
         }
       } else {
         if (addMemberResponse.ok) {
-          alert("Member added successfully. Response:", rawResponseText);
+          toast.success(
+            "Member added successfully. Response:",
+            rawResponseText
+          );
           closeOverlay();
           navigate(`/chat/${roomId}`);
         } else {
-          alert("Failed to add member. Response:", rawResponseText);
+          toast.error("Failed to add member. Response:", rawResponseText);
         }
       }
     } catch (error) {
@@ -385,6 +392,7 @@ function ChatRoom() {
           <MessageList roomId={roomId} userId={info.user.uid}></MessageList>
           <MessageInput roomId={roomId} addMessage={addMessage}></MessageInput>
         </div>
+        <ToastContainer />
       </div>
     );
   }

@@ -8,6 +8,8 @@ import Picker from "emoji-picker-react";
 import { useStompClient } from "../../context/StompClientContext";
 import "./Form.css";
 import { API } from "../../ipConfig";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Form = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -103,11 +105,11 @@ const Form = () => {
         setFoundUser(data[0]);
         setOverlayVisible(true);
       } else {
-        alert("User not found.");
+        toast.error("User not found.");
       }
     } catch (error) {
       console.error("Error finding user by email:", error);
-      alert("Error finding user by email: " + error.message);
+      toast.error("Error finding user by email: " + error.message);
     }
   };
   return (
@@ -202,6 +204,7 @@ const Form = () => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 };

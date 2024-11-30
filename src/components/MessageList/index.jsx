@@ -3,6 +3,8 @@ import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import "./styles.css";
 import { API } from "../../ipConfig";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function MessageList({ roomId, userId }) {
   const messages = useMessages(roomId);
   const navigate = useNavigate();
@@ -106,13 +108,13 @@ function MessageList({ roomId, userId }) {
       });
 
       if (addMemberResponse.ok) {
-        alert("Member added successfully ");
+        toast.success("Member added successfully ");
         navigate(`/chat/${room}`);
       } else {
-        alert("Failed to add member.");
+        toast.error("Failed to add member.");
       }
     } catch (error) {
-      alert("Error occurred: " + error.message);
+      toast.error("Error occurred: " + error.message);
     }
   };
 
@@ -194,6 +196,7 @@ function MessageList({ roomId, userId }) {
           <button onClick={() => setShowConfirmation(false)}>Không</button>
         </div>
       )}
+      <ToastContainer />
     </div>
   );
 }

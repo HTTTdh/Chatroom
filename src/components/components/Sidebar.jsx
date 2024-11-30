@@ -4,6 +4,8 @@ import { useRooms } from "../../hooks/useRooms";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../ipConfig";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function Sidebar({ info }) {
   const { logout, user } = useAuth();
   const [isOverlayOpen, setOverlayOpen] = useState(false);
@@ -33,11 +35,11 @@ function Sidebar({ info }) {
           setMembersId([...membersId, memberId]);
         }
       } else {
-        alert("User not found.");
+        toast.error("User not found.");
       }
     } catch (error) {
       console.error("Error finding user by email:", error);
-      alert("Error finding user by email: " + error.message);
+      toast.error("Error finding user by email: " + error.message);
     }
   };
   const handleAvatarUpload = (e) => {
@@ -49,7 +51,7 @@ function Sidebar({ info }) {
   };
   const handleCreateRoom = async (e) => {
     if (!roomName) {
-      alert("Please provide a room name");
+      toast.error("Please provide a room name");
       return;
     }
 
@@ -62,11 +64,11 @@ function Sidebar({ info }) {
     }
     const result = await onCreateRoom(formData);
     if (result) {
-      alert("Room created successfully!");
+      toast.success("Room created successfully!");
       closeOverlay();
       navigate(0);
     } else {
-      alert("Error creating room. Please try again later.");
+      toast.error("Error creating room. Please try again later.");
     }
   };
 
@@ -223,6 +225,7 @@ function Sidebar({ info }) {
           <p className="logoText">Tôi </p>
         </button>
       </div> */}
+      <ToastContainer />
     </div>
   );
 }
