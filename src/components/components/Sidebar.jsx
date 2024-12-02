@@ -92,19 +92,15 @@ function Sidebar({ info }) {
   };
   return (
     <div className="sidebar">
-      <div className="sidebar-item">
-        <img
-          src="/image.png"
-          alt="Logo"
-          className="logo"
-          style={{
-            borderRadius: "50%",
-            border: "1px solid #fff",
-          }}
-        />
-        <p className="logoText">BKConnect</p>
+      <div
+        className="sidebar-item"
+        style={{ background: "white", height: "108px", gap: "10px" }}
+      >
+        <img src="/image.png" alt="Logo" className="logo" />
+        <p className="Textlogo" style={{ marginTop: "16px" }}>
+          BKConnect
+        </p>
       </div>
-      <div style={{ border: "1px solid #ccc" }}></div>
       <div className="sidebar-item">
         <button onClick={handleChat}>
           <i
@@ -173,7 +169,7 @@ function Sidebar({ info }) {
               <input
                 type="text"
                 placeholder="Tên nhóm"
-                className="search-input"
+                className="searchinput"
                 value={roomName}
                 onChange={(e) => setRoomName(e.target.value)}
               />
@@ -186,7 +182,7 @@ function Sidebar({ info }) {
                 value={currentMemberEmail}
                 onChange={(e) => setCurrentMemberEmail(e.target.value)}
                 placeholder="Nhập email"
-                className="search-input"
+                className="searchinput"
               />
               <button onClick={handleAddMemberByEmail}>Thêm</button>
             </div>
@@ -216,15 +212,12 @@ function Sidebar({ info }) {
           <p className="logoText">Đăng xuất</p>
         </button>
       </div>
-      {/* <div className="sidebar-item">
+      <div className="sidebar-item user">
         <button onClick={handleMyProfile}>
-          <i
-            className="fas fa-user-alt"
-            style={{ fontSize: "16px", color: "white" }}
-          ></i>
-          <p className="logoText">Tôi </p>
+          <img src={user.photoURL} alt="" className="photoURL"></img>
+          <p className="logoText">Tôi</p>
         </button>
-      </div> */}
+      </div>
       <ToastContainer />
     </div>
   );

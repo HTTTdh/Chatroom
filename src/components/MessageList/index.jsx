@@ -52,9 +52,20 @@ function MessageList({ roomId, userId }) {
         </button>
         {isShowImg && (
           <div className="showimg">
-            <div className="showimg-content">
-              <button onClick={closeShowImg}>
-                <i class="far fa-times-circle" style={{ fontSize: "24px" }}></i>
+            <div className="showimg-content" style={{ position: "relative" }}>
+              <button
+                onClick={closeShowImg}
+                style={{
+                  position: "absolute",
+                  top: "1px",
+                  background: "transparent",
+                  cursor: "pointer",
+                }}
+              >
+                <i
+                  className="far fa-times-circle"
+                  style={{ fontSize: "24px" }}
+                ></i>
               </button>
               <div
                 style={{

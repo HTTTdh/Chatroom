@@ -24,10 +24,13 @@ const ImageSlider = () => {
 
   return (
     <div className="welcome-text homemain">
-      <h1>
-        Chào mừng bạn đã đến với{" "}
-        <span style={{ color: "#f28c81" }}>BKConnect</span>
-      </h1>
+      <h1>Chào mừng bạn đã đến với </h1>
+      <span
+        className="Textlogo"
+        style={{ fontSize: " 4rem", letterSpacing: "5px" }}
+      >
+        BKConnect
+      </span>
       <p>
         Khám phá những tiện ích hỗ trợ làm việc, quản lý tệp tin và trò chuyện
         cùng người thân, bạn bè của bạn
@@ -53,8 +56,8 @@ const ImageSlider = () => {
         </Slider>
       </div>
       <p>
-        Hãy tìm kiếm kết nối với mọi người ung quanh và cùng trải nghiệm{" "}
-        <span style={{ color: "#f28c81" }}>BKConnect</span> nhé!
+        Hãy tìm kiếm kết nối với mọi người xung quanh và cùng trải nghiệm{" "}
+        <span className="Textlogo">BKConnect</span> nhé!
       </p>
     </div>
   );

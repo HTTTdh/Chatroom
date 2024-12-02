@@ -1,7 +1,7 @@
 /* Cấu trúc và kiểu dáng của profile form */
-.profile-form {
+.profileform {
   width: 100%;
-  max-width: 472px; /* Bạn có thể thay đổi chiều rộng tối đa theo ý muốn */
+  max-width: 503px; /* Bạn có thể thay đổi chiều rộng tối đa theo ý muốn */
   margin-right: 10px;
   margin-top: 10px;
   padding: 20px;
@@ -11,40 +11,45 @@
   text-align: center;
 }
 
-.profile-form h2 {
+.profileform h2 {
   font-size: 24px;
-  color: #4caf50;
+  color: #3092e9;
   margin-bottom: 20px;
   text-transform: uppercase;
   font-weight: 700;
 }
 
+.content-form {
+  margin-top: 70px;
+}
+
 .account-user {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid #4caf50;
+  border: 3px solid #3092e9;
   margin-bottom: 20px;
   transition: transform 0.3s ease;
 }
 
 .account-user:hover {
-  transform: scale(1.1); /* Hiệu ứng phóng to nhẹ khi hover */
+  transform: scale(1.1);
 }
 
 .profile-details-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
 }
 
 .inputgroup {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
   width: 300px;
+  gap: 40px;
 }
 
 .form-label {
@@ -61,12 +66,7 @@
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  border: none;
+  background-color: white;
   font-size: 16px;
-}
-
-.formcontrol:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
 }

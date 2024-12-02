@@ -55,35 +55,21 @@ const MyProfile = ({ user }) => {
   }, [user]);
 
   return (
-    <div className="profile-form">
-      <h2>HỒ SƠ CỦA TÔI</h2>
-      <img src={photoURL} alt="Account" className="account-user" />
-      <form className="profile-details-form">
-        <div className="inputgroup">
-          <label htmlFor="nameInput" className="form-label">
-            Tên
-          </label>
-          <input
-            type="text"
-            className="formcontrol"
-            id="nameInput"
-            value={name}
-            readOnly
-          />
-        </div>
-        <div className="inputgroup">
-          <label htmlFor="emailInput" className="form-label">
-            Email
-          </label>
-          <input
-            type="email"
-            className="formcontrol"
-            id="emailInput"
-            value={email}
-            readOnly
-          />
-        </div>
-      </form>
+    <div className="profileform">
+      <div className="content-form">
+        <h2>HỒ SƠ CỦA TÔI</h2>
+        <img src={photoURL} alt="Account" className="account-user" />
+        <form className="profile-details-form">
+          <div className="inputgroup">
+            <b>Tên</b>
+            {name}
+          </div>
+          <div className="inputgroup">
+            <b>Email</b>
+            {email}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

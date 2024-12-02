@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, Await } from "react-router-dom";
+import { FaPhone, FaVideo, FaInfoCircle } from "react-icons/fa"; // Import icons
+import {
+  AiOutlineUserAdd,
+  AiOutlineLink,
+  AiOutlineLogout,
+} from "react-icons/ai"; // Import các icon cần thiết
+
 import { useStompClient } from "../../context/StompClientContext";
 import MessageInput from "../MessageInput";
 import MessageList from "../MessageList";
@@ -12,6 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 function ChatRoom() {
+  const [showConfirmation, setShowConfirmation] = useState();
   const { stompClient } = useStompClient();
   const info = useAuth();
   const userID = info.user.uid;
@@ -250,6 +258,9 @@ function ChatRoom() {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
+  const handleClick = () => {
+    setShowConfirmation(true);
+  };
   if (!stompClient || info.loading) {
     return <div>Connecting...</div>;
   } else {
@@ -266,8 +277,13 @@ function ChatRoom() {
             <h3>{name}</h3>
             <div className="group-items">
               <div className="icons">
-                <img src="/phone.png" alt="" className="img"></img>
-                <img src="/face.png" alt=" " className="img"></img>
+                <FaPhone
+                  size={22}
+                  color="#3092e9"
+                  className="img"
+                  style={{ transform: "scaleX(-1)" }}
+                />{" "}
+                <FaVideo size={25} color="#3092e9" className="img" />
                 <button
                   style={{
                     backgroundColor: "transparent",
@@ -278,15 +294,15 @@ function ChatRoom() {
                   ref={buttonRef}
                   onClick={openFrame}
                 >
-                  <img src="/detail.png" alt="" className="img"></img>
+                  <FaInfoCircle size={24} color="#3092e9" className="img" />
                 </button>
                 {isframe && (
                   <div className="Frame" ref={frameRef}>
                     <div className="Frame-item">
                       <div className="text-center">
-                        <div className="blockquote">
+                        <div className="blockquote text">
                           <b>Thông tin phòng chat</b>
-                          <br />
+
                           <img
                             src={avatar}
                             alt="avatar"
@@ -294,14 +310,34 @@ function ChatRoom() {
                           ></img>
                           <h3>{name}</h3>
                         </div>
-                        <div className="blockquote" onClick={handleAddMember}>
-                          <b className="links">Thêm thành viên mới</b>
+                        <div className="blockquote">
+                          <button onClick={handleAddMember}>
+                            <AiOutlineUserAdd size={24} />
+                            <p className="Text">Thêm thành viên mới</p>
+                          </button>
                         </div>
-                        <div className="blockquote" onClick={handleCopyLink}>
-                          <b className="links">Sao chép liên kết</b>
+                        <div className="blockquote">
+                          <button onClick={handleCopyLink}>
+                            <AiOutlineLink size={24} />
+                            <p className="Text">Sao chép liên kết</p>
+                          </button>
                         </div>
-                        <div className="blockquote" onClick={handleLeaveGroup}>
-                          <b className="links">Rời khỏi nhóm</b>
+                        <div className="blockquote">
+                          <button onClick={handleClick}>
+                            <AiOutlineLogout size={24} />
+                            <p className="Text">Rời khỏi nhóm</p>
+                          </button>
+                          {showConfirmation && (
+                            <div className="confirmation-dialog">
+                              <p>Bạn có muốn rời nhóm này không?</p>
+                              <button onClick={handleLeaveGroup}>Có</button>
+                              <button
+                                onClick={() => setShowConfirmation(false)}
+                              >
+                                Không
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

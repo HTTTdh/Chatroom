@@ -1,19 +1,27 @@
 .profile-form {
   width: 30%;
+  margin-right: 10px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: white;
-  border: 2px solid #ccc;
+  border-radius: 8px;
   gap: 20px;
 }
 
-.profile-form h2 {
+.Contentt h2 {
   font-size: 1.5rem;
 }
-
-.profile-form button {
-  background: #659dbd;
+.Contentt {
+  margin-top: 65px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+.Contentt button {
+  background: #3092e9;
   border: none;
   border-radius: 0.3125rem;
   cursor: pointer;
@@ -21,14 +29,15 @@
   font-size: 1rem;
   transition: background-color 0.3s ease;
   display: flex;
+  justify-content: center;
   align-items: center;
   padding: 0.625rem 0.9375rem;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Roboto",
     "Apple Color Emoji", "Helvetica Neue", sans-serif;
 }
 
-.profile-form button:hover {
-  background-color: #54819a;
+.Contentt button:hover {
+  background-color: #50a3eb;
 }
 
 .google-icon {

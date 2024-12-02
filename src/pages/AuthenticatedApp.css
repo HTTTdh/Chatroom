@@ -3,54 +3,10 @@
   flex-direction: row;
   width: 100%;
   height: 100vh;
-  /* background-color: #1a1a40; */
-  background: #1a1a19;
+  background: #f0f8ff;
+  gap: 10px;
+  padding-left: 5px;
 }
-/* .profile-form {
-  width: 30%;
-  margin-left: 20px;
-  margin-right: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  border: 2px solid #ccc;
-  border-radius: 20px;
-  gap: 20px;
-}
-
-.profile-form h2 {
-  font-size: 24px;
-} */
-
-/* .group {
-  padding-top: 10px;
-  display: flex;
-  flex-direction: row;
-  
-  gap: 30px;
-  padding-bottom: 10px;
-  align-items: center;
-}
-.info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.imagine {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: #669ac2;
-  align-self: flex-start;
-}
-.group-item {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  row-gap: 5px;
-} */
 @media (max-width: 768px) {
   .home {
     flex-direction: column;

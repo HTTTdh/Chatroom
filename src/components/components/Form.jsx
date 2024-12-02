@@ -114,8 +114,9 @@ const Form = () => {
   };
   return (
     <div className="page">
-      <h2>Chat</h2>
-      <div className="search">
+      <div className="contentt">
+        <h2 style={{ textAlign: "center" }}>Chat</h2>
+        {/* <div className="search">
         <input
           type="text"
           value={currentMemberEmail}
@@ -124,87 +125,114 @@ const Form = () => {
           className="search-input"
         />
         <button onClick={handleAddMemberByEmail}>Tìm kiếm</button>
-      </div>
-      <div className="chat">
-        <JoinedRooms userId={user.uid} />
-      </div>
-      {overlayVisible && foundUser && (
-        <div className="overlay-message">
-          <div className="overlay-message-content">
-            <h3>Thông tin người dùng</h3>
-            <img src={foundUser.photoURL} alt="avatar" className="avatar"></img>
-            <p>Email: {foundUser.email}</p>
-            <p>Tên: {foundUser.fullname}</p>
-            <p>ID: {foundUser.uid}</p>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="search">
-                <div className="textZonee" style={{ position: "relative" }}>
-                  <input
-                    type="text"
-                    placeholder="Message"
-                    value={typing}
-                    onChange={handleChange}
-                    aria-label="Message input"
-                    style={{ paddingRight: "100px" }} // Dành chỗ cho icon
-                  />
-                  <input
-                    id="fileInput"
-                    type="file"
-                    accept="image/*"
-                    {...register("file")}
-                    style={{ display: "none" }}
-                    onChange={handleImageChange}
-                  />
-                  <div className="input-icons">
-                    <div className="emoji">
-                      <BsEmojiSmileFill
-                        onClick={handleEmojiPickerhideShow}
-                        className="icon "
-                      />
-                      {showEmojiPicker && (
-                        <Picker
-                          onEmojiClick={handleEmojiClick}
-                          style={{
-                            marginTop: "-350px",
-                            height: "350px",
-                            width: "300px",
-                            backgroundColor: "#fff",
-                            borderRadius: "10px",
-                            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
-                          }}
-                        />
-                      )}
-                    </div>
-                    <i
-                      className="fas fa-camera icon"
-                      onClick={handleCameraClick}
-                    ></i>
-                    <i className="fas fa-microphone icon"></i>
-                  </div>
-                  <button
-                    style={{
-                      backgroundColor: "#4CAF50",
-                      color: "white",
-                      padding: "10px 20px",
-                      fontSize: "16px",
-                      cursor: "pointer",
-                      border: "none",
-                      borderRadius: "5px",
-                      marginTop: "10px",
-                    }}
-                  >
-                    Gửi
-                  </button>
-                  <button onClick={closeOverlay} aria-label="Close overlay">
-                    Đóng
-                  </button>
-                </div>
-              </div>
-            </form>
+        </div> */}
+        <div className="search-container">
+          <div className="search-icon">
+            <svg viewBox="6 6 24 24" fill="currentColor" width="20" height="20">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M23.522 21.662c-.389-.344-.443-.925-.181-1.373a8.5 8.5 0 1 0-3.051 3.051c.447-.261 1.028-.207 1.372.182l3.608 4.073a1.647 1.647 0 1 0 2.325-2.326l-4.073-3.607zm-3.28-9.905a6 6 0 1 1-8.484 8.486 6 6 0 0 1 8.485-8.486z"
+              ></path>
+            </svg>
           </div>
+          <input
+            type="text"
+            value={currentMemberEmail}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                handleAddMemberByEmail(e.target.value); // Gọi hàm tìm kiếm khi nhấn Enter
+              }
+            }}
+            onChange={handleEmailChange}
+            placeholder="Nhập email"
+            className="search-input"
+          />
         </div>
-      )}
-      <ToastContainer />
+
+        <div className="chat">
+          <JoinedRooms userId={user.uid} />
+        </div>
+        {overlayVisible && foundUser && (
+          <div className="overlay-message">
+            <div className="overlay-message-content">
+              <h3>Thông tin người dùng</h3>
+              <img
+                src={foundUser.photoURL}
+                alt="avatar"
+                className="avatar"
+              ></img>
+              <p>Email: {foundUser.email}</p>
+              <p>Tên: {foundUser.fullname}</p>
+              <p>ID: {foundUser.uid}</p>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="search">
+                  <div className="textZonee" style={{ position: "relative" }}>
+                    <input
+                      type="text"
+                      placeholder="Message"
+                      value={typing}
+                      onChange={handleChange}
+                      aria-label="Message input"
+                      style={{ paddingRight: "100px" }} // Dành chỗ cho icon
+                    />
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      {...register("file")}
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    <div className="input-icons">
+                      <div className="emoji">
+                        <BsEmojiSmileFill
+                          onClick={handleEmojiPickerhideShow}
+                          className="icon "
+                        />
+                        {showEmojiPicker && (
+                          <Picker
+                            onEmojiClick={handleEmojiClick}
+                            style={{
+                              marginTop: "-350px",
+                              height: "350px",
+                              width: "300px",
+                              backgroundColor: "#fff",
+                              borderRadius: "10px",
+                              boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                            }}
+                          />
+                        )}
+                      </div>
+                      <i
+                        className="fas fa-camera icon"
+                        onClick={handleCameraClick}
+                      ></i>
+                      <i className="fas fa-microphone icon"></i>
+                    </div>
+                    <button
+                      style={{
+                        backgroundColor: "#4CAF50",
+                        color: "white",
+                        fontSize: "16px",
+                        cursor: "pointer",
+                        border: "none",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Gửi
+                    </button>
+                    <button onClick={closeOverlay} aria-label="Close overlay">
+                      Đóng
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+        <ToastContainer />
+      </div>
     </div>
   );
 };

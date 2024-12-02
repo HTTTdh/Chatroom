@@ -6,56 +6,51 @@
   flex-direction: column;
   align-items: center;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 10px;
   gap: 20px;
+  height: 100vh;
 }
-.search {
+.contentt {
+  margin-top: 65px;
+}
+.search-container {
   display: flex;
-  width: 95%;
-  justify-content: center;
+  align-items: center;
+  background-color: #ccc;
+  border-radius: 20px;
+  padding: 8px 12px;
+  width: 430px;
+  height: 42px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
+.search-icon svg {
+  color: #8a8d91;
+  margin-right: 8px;
+}
+
 .search-input {
-  width: 100%;
-  max-width: 300px;
-  padding: 20px 20px;
-  border: 2px solid #3c6942;
-  border-radius: 25px;
-  outline: none;
-  font-size: 13px;
-  transition: 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.styled-input::placeholder {
-  color: #aaa;
-}
-
-.styled-input:focus {
-  border-color: #3c6942;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.search button {
-  background-color: #3c6942;
-  color: white;
-  width: 140px;
-  font-size: 13px;
-  cursor: pointer;
   border: none;
-  border-radius: 40px;
-  margin-left: 10px;
-  transition: background-color 0.3s;
+  outline: none;
+  background: #ccc;
+  flex: 1;
+  font-size: 14px;
+  color: #8a8d91;
 }
 
-.search button:hover {
-  background-color: #f28c81;
+.search-input::placeholder {
+  color: #8a8d91;
+}
+
+.search-input:focus {
+  color: #8a8d91;
 }
 
 .chat {
   padding: 10px 0;
   width: 95%;
   height: 500px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: darkgrey lightgrey;
@@ -77,7 +72,6 @@
   animation: fadeInOverlay 0.3s ease-in-out;
 }
 
-/* Overlay content box */
 .overlay-message-content {
   background-color: #ffffff;
   padding: 30px;
@@ -95,7 +89,6 @@
   font-size: 1.8rem;
 }
 
-/* Avatar styling */
 .avatar {
   width: 100px;
   height: 100px;
@@ -104,9 +97,8 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Input field styling */
 .textZonee input[type="text"] {
-  width: 80%;
+  width: 100%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ddd;
@@ -117,7 +109,7 @@
 }
 
 .textZonee input[type="text"]:focus {
-  border-color: #4caf50;
+  border-color: #3092e9;
   outline: none;
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
 }
