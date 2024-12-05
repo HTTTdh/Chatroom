@@ -74,7 +74,6 @@ function ChatRoom () {
         console.error("Error fetching room data:", error);
       }
     };
-    console.log("sadd");
     fetchRoomData();
   }, [roomId]);
   const handleAddMemberByEmail = async () => {

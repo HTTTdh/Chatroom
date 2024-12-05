@@ -1,189 +1,159 @@
-import React, { useEffect, useRef } from "react";
-
-const LOCAL_IP_ADDRESS = "192.168.1.12:8000";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useWebRTC } from "../../context/WebRTC";
 
 function CallRoom () {
-    const roomNameRef = useRef(null);
-    const btnConnectRef = useRef(null);
-    const btnToggleVideoRef = useRef(null);
-    const btnToggleAudioRef = useRef(null);
-    const roomConfigRef = useRef(null);
-    const roomDivRef = useRef(null);
+    const roomId = useParams()["roomId"];
+    const { startCall, createOffer, localStream, remoteStream } = useWebRTC();
+    const [isCallStarted, setIsCallStarted] = useState(false);
     const localVideoRef = useRef(null);
     const remoteVideoRef = useRef(null);
 
     useEffect(() => {
-        const socket = io.connect(`http://${LOCAL_IP_ADDRESS}`);
-        const streamConstraints = { audio: true, video: true };
-        const iceServers = {
-            iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-        };
+        const setupStreams = async () => {
+            if (!isCallStarted) {
+                await startCall(roomId);
+                await createOffer();
+                setIsCallStarted(true);
 
-        let localStream, remoteStream, rtcPeerConnection;
-        let isCaller = false;
-        let roomName = "";
-
-        // Tạo các hàm xử lý toggle
-        const toggleTrack = (trackType) => {
-            if (!localStream) return;
-
-            const track =
-                trackType === "video"
-                    ? localStream.getVideoTracks()[0]
-                    : localStream.getAudioTracks()[0];
-            track.enabled = !track.enabled;
-
-            const buttonRef =
-                trackType === "video" ? btnToggleVideoRef.current : btnToggleAudioRef.current;
-            const icon = buttonRef.querySelector("i");
-            icon.className = trackType === "video"
-                ? track.enabled
-                    ? "bi bi-camera-video-fill"
-                    : "bi bi-camera-video-off-fill"
-                : track.enabled
-                    ? "bi bi-mic-fill"
-                    : "bi bi-mic-mute-fill";
-        };
-
-        // Nút kết nối phòng
-        btnConnectRef.current.onclick = () => {
-            const input = roomNameRef.current.value;
-            if (!input) {
-                alert("Room cannot be empty!");
-                return;
+                if (localVideoRef.current) {
+                    localVideoRef.current.srcObject = localStream.current;
+                }
+                if (remoteVideoRef.current) {
+                    remoteVideoRef.current.srcObject = remoteStream.current;
+                }
             }
-
-            roomName = input;
-            socket.emit("joinRoom", roomName);
-            roomConfigRef.current.classList.add("d-none");
-            roomDivRef.current.classList.remove("d-none");
         };
 
-        // Gắn các sự kiện socket
-        const handleSocketEvent = (eventName, callback) => socket.on(eventName, callback);
+        setupStreams();
 
-        handleSocketEvent("created", () => {
-            navigator.mediaDevices
-                .getUserMedia(streamConstraints)
-                .then((stream) => {
-                    localStream = stream;
-                    localVideoRef.current.srcObject = stream;
-                    isCaller = true;
-                })
-                .catch(console.error);
-        });
+    }, [isCallStarted]);
 
-        handleSocketEvent("joined", () => {
-            navigator.mediaDevices
-                .getUserMedia(streamConstraints)
-                .then((stream) => {
-                    localStream = stream;
-                    localVideoRef.current.srcObject = stream;
-                    socket.emit("ready", roomName);
-                })
-                .catch(console.error);
-        });
-
-        handleSocketEvent("ready", () => {
-            if (isCaller) {
-                rtcPeerConnection = new RTCPeerConnection(iceServers);
-                rtcPeerConnection.onicecandidate = (event) => {
-                    if (event.candidate) {
-                        socket.emit("candidate", {
-                            type: "candidate",
-                            label: event.candidate.sdpMLineIndex,
-                            id: event.candidate.sdpMid,
-                            candidate: event.candidate.candidate,
-                            room: roomName,
-                        });
-                    }
-                };
-                rtcPeerConnection.ontrack = (event) => {
-                    remoteStream = event.streams[0];
-                    remoteVideoRef.current.srcObject = remoteStream;
-                };
-                localStream.getTracks().forEach((track) => {
-                    rtcPeerConnection.addTrack(track, localStream);
-                });
-                rtcPeerConnection
-                    .createOffer()
-                    .then((offer) => {
-                        return rtcPeerConnection.setLocalDescription(offer);
-                    })
-                    .then(() => {
-                        socket.emit("offer", {
-                            type: "offer",
-                            sdp: rtcPeerConnection.localDescription,
-                            room: roomName,
-                        });
-                    });
+    const toggleTrack = (type) => {
+        if (localStream.current) {
+            const track = localStream.current
+                .getTracks()
+                .find((t) => t.kind === type);
+            if (track) {
+                track.enabled = !track.enabled;
             }
-        });
+        }
+    };
 
-        return () => socket.disconnect();
-    }, []);
+    const leaveRoom = () => { };
 
     return (
-        <div>
-            <h1 style={{ textAlign: "center", margin: "15px 10px 30px 10px" }}>VIDEO CALL</h1>
-            <div id="roomConfig" ref={roomConfigRef} className="d-flex justify-content-center mb-3">
-                <div className="input-group input-group-lg" style={{ maxWidth: "400px" }}>
-                    <input
-                        id="roomName"
-                        ref={roomNameRef}
-                        type="text"
-                        className="form-control form-control-lg"
-                        placeholder="Enter room"
-                    />
-                    <button id="btnConnect" ref={btnConnectRef} className="btn btn-primary btn-lg">
-                        Connect
-                    </button>
-                </div>
-            </div>
+        <div style={{ padding: "20px", backgroundColor: "#282c34", height: "100vh" }}>
+            <h1 style={{ textAlign: "center", color: "#fff", marginBottom: "20px" }}>Video Call</h1>
 
-            <div id="roomDiv" ref={roomDivRef} className="d-none d-flex flex-column align-items-center mt-3">
-                <h4 style={{ paddingBottom: "10px" }}>RemoteVideo</h4>
+            <div
+                id="roomDiv"
+                className="d-flex flex-column align-items-center"
+                style={{
+                    maxWidth: "800px",
+                    margin: "0 auto",
+                    backgroundColor: "#1e1e1e",
+                    borderRadius: "10px",
+                    padding: "20px",
+                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                }}
+            >
                 <div
                     id="remoteVideoContainer"
                     style={{
-                        width: "600px",
+                        width: "100%",
                         height: "450px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         backgroundColor: "#363636",
+                        borderRadius: "10px",
+                        marginBottom: "20px",
+                        position: "relative",
                     }}
                 >
                     <video
                         id="remoteVideo"
                         ref={remoteVideoRef}
                         autoPlay
-                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                        style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "10px" }}
+                    ></video>
+                    <video
+                        muted
+                        id="localVideo"
+                        ref={localVideoRef}
+                        autoPlay
+                        style={{
+                            width: "150px",
+                            height: "150px",
+                            position: "absolute",
+                            bottom: "10px",
+                            right: "10px",
+                            border: "2px solid #fff",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                        }}
                     ></video>
                 </div>
 
-                <div className="d-flex mt-3">
-                    <button id="toggleVideo" ref={btnToggleVideoRef} className="btn-circle enabled-style">
+                <div className="d-flex justify-content-center" style={{ marginBottom: "20px" }}>
+                    <button
+                        id="toggleVideo"
+                        className="btn-circle control-button"
+                        onClick={() => toggleTrack("video")}
+                        style={{
+                            backgroundColor: "#007bff",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "60px",
+                            height: "60px",
+                            margin: "0 10px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            cursor: "pointer",
+                        }}
+                    >
                         <i className="bi bi-camera-video-fill"></i>
                     </button>
-                    <button id="toggleAudio" ref={btnToggleAudioRef} className="btn-circle enabled-style">
+                    <button
+                        id="toggleAudio"
+                        className="btn-circle control-button"
+                        onClick={() => toggleTrack("audio")}
+                        style={{
+                            backgroundColor: "#28a745",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "50%",
+                            width: "60px",
+                            height: "60px",
+                            margin: "0 10px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            cursor: "pointer",
+                        }}
+                    >
                         <i className="bi bi-mic-fill"></i>
                     </button>
                 </div>
 
-                <video
-                    muted
-                    id="localVideo"
-                    ref={localVideoRef}
-                    autoPlay
+                <button
+                    id="leaveRoom"
+                    onClick={leaveRoom}
                     style={{
-                        width: "200px",
-                        height: "200px",
-                        position: "absolute",
-                        bottom: "20px",
-                        right: "20px",
+                        backgroundColor: "#dc3545",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "5px",
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                        fontSize: "16px",
                     }}
-                ></video>
+                >
+                    Leave Room
+                </button>
             </div>
         </div>
     );

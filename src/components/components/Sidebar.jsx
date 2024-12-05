@@ -4,7 +4,7 @@ import { useRooms } from "../../hooks/useRooms";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../ipConfig";
-function Sidebar({ info }) {
+function Sidebar ({ info }) {
   const { logout } = useAuth();
   const [isOverlayOpen, setOverlayOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
@@ -98,7 +98,7 @@ function Sidebar({ info }) {
       <div className="sidebar-item">
         <button>
           <i
-            class="far fa-comment"
+            className="far fa-comment"
             style={{ fontSize: "16px", color: "white" }}
           ></i>
           <p className="logoText">Chat</p>
@@ -117,7 +117,7 @@ function Sidebar({ info }) {
       <div className="sidebar-item">
         <button>
           <i
-            class="far fa-edit"
+            className="far fa-edit"
             style={{ fontSize: "16px", color: "white" }}
           ></i>
           <p className="logoText">Hồ sơ của tôi</p>

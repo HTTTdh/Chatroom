@@ -7,7 +7,7 @@ import "./style.css";
 import { API } from "../../ipConfig.js";
 import { useLastMessage } from "../../hooks/useLastMessages";
 
-function JoinedRooms({ userId }) {
+function JoinedRooms ({ userId }) {
   const containerRef = useRef(null);
   const { joinedRooms } = useRooms(userId);
   const [displayNames, setDisplayNames] = useState({});
@@ -24,7 +24,7 @@ function JoinedRooms({ userId }) {
 
     noti.forEach(async (notification) => {
       if (notification.chatRoomId === roomId) {
-        const url = `http://localhost:8080/markAsRead/${notification.notificationId}`;
+        const url = `${API}markAsRead/${notification.notificationId}`;
         await fetch(url);
       }
     });

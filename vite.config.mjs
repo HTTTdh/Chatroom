@@ -11,4 +11,5 @@ export default defineConfig({
     port: 5173,
   },
   plugins: [react()],
+  optimizeDeps: { exclude: ["fsevents"] },
 });
