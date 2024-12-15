@@ -8,8 +8,7 @@ import Picker from "emoji-picker-react";
 import { useStompClient } from "../../context/StompClientContext";
 import "./Form.css";
 import { API } from "../../ipConfig";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Noti from "../Noti/Noti";
 const Form = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -21,6 +20,8 @@ const Form = () => {
   const [image, setImage] = useState(null);
   const [currentMemberEmail, setCurrentMemberEmail] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [notification, setNotification] = useState("");
+
   var [typing, setTyping] = useState("");
 
   const closeOverlay = () => {
@@ -44,7 +45,6 @@ const Form = () => {
 
     if (res.ok) {
       const savedMessage = await res.json();
-      // navigate(`/chat/${roomId}`);
       navigate(0);
       console.log(savedMessage);
     } else {
@@ -105,15 +105,17 @@ const Form = () => {
         setFoundUser(data[0]);
         setOverlayVisible(true);
       } else {
-        toast.error("User not found.");
+        setNotification("User not found");
       }
     } catch (error) {
       console.error("Error finding user by email:", error);
-      toast.error("Error finding user by email: " + error.message);
+      setNotification("Error finding user by email");
     }
   };
   return (
     <div className="page">
+      <Noti message={notification} />
+
       <div className="contentt">
         <h2 style={{ textAlign: "center" }}>Chat</h2>
         {/* <div className="search">
@@ -231,7 +233,6 @@ const Form = () => {
             </div>
           </div>
         )}
-        <ToastContainer />
       </div>
     </div>
   );

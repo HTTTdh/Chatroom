@@ -3,14 +3,14 @@ import React, { useLayoutEffect, useRef, useState, useEffect } from "react";
 import "./styles.css";
 import { API } from "../../ipConfig";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Noti from "../Noti/Noti";
 function MessageList({ roomId, userId }) {
   const messages = useMessages(roomId);
   const navigate = useNavigate();
   const containerRef = React.useRef(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [linkToNavigate, setLinkToNavigate] = useState("");
+  const [notification, setNotification] = useState("");
 
   useLayoutEffect(() => {
     if (containerRef.current) {
@@ -119,13 +119,13 @@ function MessageList({ roomId, userId }) {
       });
 
       if (addMemberResponse.ok) {
-        toast.success("Member added successfully ");
-        navigate(`/chat/${room}`);
+        setNotification("Member added successfully ");
+        navigate("/");
       } else {
-        toast.error("Failed to add member.");
+        setNotification("Failed to add member.");
       }
     } catch (error) {
-      toast.error("Error occurred: " + error.message);
+      setNotification("Error occurred");
     }
   };
 
@@ -174,6 +174,12 @@ function MessageList({ roomId, userId }) {
         return <span key={index}>{part} </span>;
       });
     };
+    // const leaveChatRoom = (message) => {
+    //   const mes = "da roi nhom";
+    //   if (typeof message === "string" && message.endsWith(mes)) {
+    //     return <div className="messageout"> {message}</div>;
+    //   } else return null;
+    // };
     return (
       <div className={["message", type].join(" ")}>
         <div className={["sender", type].join(" ")}>
@@ -182,6 +188,7 @@ function MessageList({ roomId, userId }) {
             : displayedSender.fullname || "Loading sender..."}
         </div>
         <div className="message-content">
+          {/* {leaveChatRoom(message)} */}
           {content && <div className="text">{renderContent(content)}</div>}
 
           {imageUrl && <ImageComponent imageUrl={imageUrl} />}
@@ -192,6 +199,8 @@ function MessageList({ roomId, userId }) {
 
   return (
     <div className="chat-container" ref={containerRef}>
+      <Noti message={notification} />
+
       {messages &&
         messages.map((x) => (
           <Message
@@ -207,7 +216,6 @@ function MessageList({ roomId, userId }) {
           <button onClick={() => setShowConfirmation(false)}>Không</button>
         </div>
       )}
-      <ToastContainer />
     </div>
   );
 }

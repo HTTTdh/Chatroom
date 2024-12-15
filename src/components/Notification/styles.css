@@ -1,0 +1,75 @@
+/* Container tổng thể cho thông báo */
+.form {
+  width: 100%;
+  max-width: 503px; /* Chiều rộng tối đa */
+  margin: 10px auto; /* Căn giữa ngang và tạo khoảng cách trên */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Tiêu đề thông báo */
+.form h2 {
+  font-size: 24px;
+  color: #3092e9;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* Nội dung chính của thông báo */
+.content {
+  margin-top: 20px; /* Giảm khoảng cách so với phiên bản trước */
+  text-align: left; /* Căn trái nội dung */
+}
+
+/* Danh sách thông báo */
+.notification-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Mỗi item thông báo */
+.notification-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Hiệu ứng hover cho item */
+.notification-item:hover {
+  background-color: #e6f7ff;
+  transform: translateY(-2px);
+}
+
+/* Nội dung văn bản của thông báo */
+.notification-item p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+  flex: 1; /* Chiếm phần lớn không gian */
+}
+
+/* Ngày của thông báo */
+.notification-date {
+  font-size: 14px;
+  color: #888;
+  white-space: nowrap; /* Không xuống dòng */
+}
+
+/* Loading và thông báo trống */
+.form p {
+  font-size: 16px;
+  color: #666;
+  text-align: center;
+}

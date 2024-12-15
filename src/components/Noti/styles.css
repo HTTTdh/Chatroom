@@ -1,0 +1,29 @@
+/* styles.css */
+.notification {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  opacity: 0; /* Initially invisible */
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+
+/* Define the fade-in and fade-out keyframes */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

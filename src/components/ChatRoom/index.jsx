@@ -6,7 +6,7 @@ import {
   AiOutlineLink,
   AiOutlineLogout,
 } from "react-icons/ai"; // Import các icon cần thiết
-
+import Noti from "../Noti/Noti";
 import { useStompClient } from "../../context/StompClientContext";
 import MessageInput from "../MessageInput";
 import MessageList from "../MessageList";
@@ -16,8 +16,7 @@ import Sidebar from "../components/Sidebar";
 import Form from "../components/Form";
 import { API } from "../../ipConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 function ChatRoom() {
   const [showConfirmation, setShowConfirmation] = useState();
   const { stompClient } = useStompClient();
@@ -37,6 +36,7 @@ function ChatRoom() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const [notification, setNotification] = useState("");
 
   useEffect(() => {
     const fetchRoomData = async () => {
@@ -104,17 +104,16 @@ function ChatRoom() {
 
       const result = await response.text();
       if (response.ok) {
-        toast.success("Đã rời khỏi nhóm thành công!");
+        setNotification("Đã rời khỏi nhóm thành công!");
         navigate("/");
       } else {
-        toast.error(result || "Có lỗi xảy ra.");
+        setNotification("Có lỗi xảy ra.");
       }
     } catch (error) {
       console.error("Lỗi:", error);
-      toast.error("Không thể kết nối tới server.");
+      setNotification("Không thể kết nối tới server.");
     }
   };
-
   const handleAddMemberByEmail = async () => {
     try {
       const response = await fetch(
@@ -122,28 +121,26 @@ function ChatRoom() {
       );
       const data = await response.json();
 
-      if (response.ok && data.length > 0) {
-        const memberId = data[0].uid; // Assuming that you want to use the ID from the response
-        const memberEmail = data[0].email;
-        if (!membersEmail.includes(memberEmail)) {
-          setMemberEmail([...membersEmail, memberEmail]);
-        }
-        if (!membersId.includes(memberId)) {
-          setMembersId([...membersId, memberId]);
-        }
-      } else {
-        toast.error("User not found.");
-      }
-
-      // Check if the user data exists
-      if (!data || !data[0]?.uid) {
+      if (!response.ok || data.length === 0 || !data[0]?.uid) {
+        console.log("User not found.");
         console.error("User not found or UID missing.");
         return;
       }
 
+      const memberId = data[0].uid;
+      const memberEmail = data[0].email;
+
+      if (!membersEmail.includes(memberEmail)) {
+        setMemberEmail([...membersEmail, memberEmail]);
+      }
+
+      if (!membersId.includes(memberId)) {
+        setMembersId([...membersId, memberId]);
+      }
+
       const requestBody = {
         roomId: roomId,
-        newMemberId: data[0].uid,
+        newMemberId: memberId,
       };
 
       const addMemberResponse = await fetch(`${API}addNewMember`, {
@@ -157,37 +154,35 @@ function ChatRoom() {
       const rawResponseText = await addMemberResponse.text();
       console.log("Raw Response:", rawResponseText);
 
-      if (
-        addMemberResponse.headers
-          .get("content-type")
-          ?.includes("application/json")
-      ) {
-        const jsonResponse = JSON.parse(rawResponseText);
-
-        if (addMemberResponse.ok) {
-          toast.success(
-            "Member added successfully:",
-            JSON.stringify(jsonResponse)
-          );
-          closeOverlay();
-          navigate(`/chat/${roomId}`);
-        } else {
-          toast.error("Failed to add member:", jsonResponse);
-        }
+      if (addMemberResponse.ok) {
+        setNotification("Member added successfully!");
+        navigate("/");
       } else {
-        if (addMemberResponse.ok) {
-          toast.success(
-            "Member added successfully. Response:",
-            rawResponseText
-          );
-          closeOverlay();
-          navigate(`/chat/${roomId}`);
-        } else {
-          toast.error("Failed to add member. Response:", rawResponseText);
-        }
+        setNotification("Failed to add member.");
+        console.error("Add member response error:", rawResponseText);
+        return;
+      }
+
+      const url = `${API}addMemberChatRoom/${roomId}?userId=${memberId}`;
+      const finalResponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Request URL:", url);
+
+      if (finalResponse.ok) {
+        setNotification("Đã thêm thành viên nhóm thành công!");
+        closeOverlay();
+        navigate("/");
+      } else {
+        setNotification("Có lỗi xảy ra khi thêm thành viên vào nhóm.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      setNotification("Không thể kết nối tới server.");
     }
   };
 
@@ -226,6 +221,7 @@ function ChatRoom() {
   const handleAddMember = async () => {
     closeFrame();
     setOverlayVisible(true);
+
     console.log(requestBody);
   };
   const closeOverlay = () => {
@@ -266,6 +262,8 @@ function ChatRoom() {
   } else {
     return (
       <div className="home">
+        <Noti message={notification} />
+
         <Sidebar info={info}></Sidebar>
         <Form />
         <div className="connecting" hidden={stompClient.connected}>
@@ -428,7 +426,6 @@ function ChatRoom() {
           <MessageList roomId={roomId} userId={info.user.uid}></MessageList>
           <MessageInput roomId={roomId} addMessage={addMessage}></MessageInput>
         </div>
-        <ToastContainer />
       </div>
     );
   }

@@ -9,7 +9,12 @@
   color: white;
   word-wrap: break-word; /* Allow long words to break onto the next line */
 }
-
+.messageout {
+  background-color: white;
+  color: #333;
+  text-align: center;
+  align-items: center;
+}
 .incoming .message-content {
   align-self: flex-start;
 }

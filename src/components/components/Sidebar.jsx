@@ -4,8 +4,8 @@ import { useRooms } from "../../hooks/useRooms";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { API } from "../../ipConfig";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Noti from "../Noti/Noti";
+
 function Sidebar({ info }) {
   const { logout, user } = useAuth();
   const [isOverlayOpen, setOverlayOpen] = useState(false);
@@ -16,7 +16,7 @@ function Sidebar({ info }) {
   const [groupAvatar, setGroupAvatar] = useState(null);
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
-
+  const [notification, setNotification] = useState("");
   const { onCreateRoom } = useRooms(user.uid);
 
   const handleAddMemberByEmail = async () => {
@@ -35,11 +35,11 @@ function Sidebar({ info }) {
           setMembersId([...membersId, memberId]);
         }
       } else {
-        toast.error("User not found.");
+        setNotification("User not found.");
       }
     } catch (error) {
       console.error("Error finding user by email:", error);
-      toast.error("Error finding user by email: " + error.message);
+      setNotification("Error finding user by email");
     }
   };
   const handleAvatarUpload = (e) => {
@@ -51,7 +51,7 @@ function Sidebar({ info }) {
   };
   const handleCreateRoom = async (e) => {
     if (!roomName) {
-      toast.error("Please provide a room name");
+      setNotification("Please provide a room name");
       return;
     }
 
@@ -64,11 +64,11 @@ function Sidebar({ info }) {
     }
     const result = await onCreateRoom(formData);
     if (result) {
-      toast.success("Room created successfully!");
+      setNotification("Room created successfully!");
       closeOverlay();
-      navigate(0);
+      navigate("/");
     } else {
-      toast.error("Error creating room. Please try again later.");
+      setNotification("Error creating room. Please try again later.");
     }
   };
 
@@ -90,8 +90,12 @@ function Sidebar({ info }) {
   const handleChat = () => {
     navigate("/");
   };
+  const handleNoti = () => {
+    navigate("/mynotification");
+  };
   return (
     <div className="sidebar">
+      <Noti message={notification} />
       <div
         className="sidebar-item"
         style={{ background: "white", height: "108px", gap: "10px" }}
@@ -202,6 +206,15 @@ function Sidebar({ info }) {
           </div>
         </div>
       )}
+      <div className="sidebar-item">
+        <button onClick={handleNoti}>
+          <i
+            className="far fa-bell"
+            style={{ fontSize: "16px", color: "white" }}
+          ></i>
+          <p className="logoText">Thông báo</p>
+        </button>
+      </div>
 
       <div className="sidebar-item">
         <button onClick={logout}>
@@ -218,7 +231,6 @@ function Sidebar({ info }) {
           <p className="logoText">Tôi</p>
         </button>
       </div>
-      <ToastContainer />
     </div>
   );
 }
