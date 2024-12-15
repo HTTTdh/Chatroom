@@ -1,46 +1,51 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useWebRTC } from "../../context/WebRTC";
+import VideoGrid from "../VideoGrid";
 
 function CallRoom () {
     const roomId = useParams()["roomId"];
-    const { startCall, createOffer, localStream, remoteStream } = useWebRTC();
-    const [isCallStarted, setIsCallStarted] = useState(false);
-    const localVideoRef = useRef(null);
-    const remoteVideoRef = useRef(null);
+    const { joinRoom, createOffer, active, participants, localStream, remoteStreams } = useWebRTC();
+    const [audioState, setAudioState] = useState(true);
+    const [videoState, setVideoState] = useState(true);
 
     useEffect(() => {
-        const setupStreams = async () => {
-            if (!isCallStarted) {
-                await startCall(roomId);
+        async function startJoinRoom () {
+            await joinRoom(roomId);
+        }
+        startJoinRoom();
+    }, []);
+
+    useEffect(() => {
+        async function startCreateOffer () {
+            if (participants.length > 0) {
                 await createOffer();
-                setIsCallStarted(true);
-
-                if (localVideoRef.current) {
-                    localVideoRef.current.srcObject = localStream.current;
-                }
-                if (remoteVideoRef.current) {
-                    remoteVideoRef.current.srcObject = remoteStream.current;
-                }
-            }
-        };
-
-        setupStreams();
-
-    }, [isCallStarted]);
-
-    const toggleTrack = (type) => {
-        if (localStream.current) {
-            const track = localStream.current
-                .getTracks()
-                .find((t) => t.kind === type);
-            if (track) {
-                track.enabled = !track.enabled;
             }
         }
+        startCreateOffer();
+    }, [participants]);
+
+    const toggleAudio = () => {
+        localStream.getAudioTracks().forEach((track) => {
+            track.enabled = !track.enabled;
+            setAudioState(track.enabled);
+
+        });
+    };
+    const toggleVideo = () => {
+        localStream.getVideoTracks().forEach((track) => {
+            track.enabled = !track.enabled;
+            setVideoState(track.enabled);
+        });
     };
 
-    const leaveRoom = () => { };
+    useEffect(() => {
+        console.log("Cập nhập remoteStreams", remoteStreams);
+    }, [remoteStreams]);
+
+    const leaveRoom = () => {
+        window.location.href = "/";
+    };
 
     return (
         <div style={{ padding: "20px", backgroundColor: "#282c34", height: "100vh" }}>
@@ -58,51 +63,51 @@ function CallRoom () {
                     boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                 }}
             >
-                <div
-                    id="remoteVideoContainer"
-                    style={{
-                        width: "100%",
-                        height: "450px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: "#363636",
-                        borderRadius: "10px",
-                        marginBottom: "20px",
-                        position: "relative",
-                    }}
-                >
-                    <video
-                        id="remoteVideo"
-                        ref={remoteVideoRef}
-                        autoPlay
-                        style={{ width: "100%", height: "100%", objectFit: "contain", borderRadius: "10px" }}
-                    ></video>
-                    <video
-                        muted
-                        id="localVideo"
-                        ref={localVideoRef}
-                        autoPlay
+
+                <VideoGrid participants={participants} remoteStreams={remoteStreams} />
+
+                {/* Video của chính mình (luôn cố định góc trái) */}
+                {localStream && (
+                    <div
                         style={{
-                            width: "150px",
-                            height: "150px",
                             position: "absolute",
                             bottom: "10px",
-                            right: "10px",
-                            border: "2px solid #fff",
+                            left: "10px",
+                            width: "150px",
+                            height: "150px",
+                            backgroundColor: "#000",
                             borderRadius: "10px",
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                            overflow: "hidden",
+                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
                         }}
-                    ></video>
-                </div>
+                    >
+                        <video
+                            key="local"
+                            className="local-video"
+                            muted
+                            autoPlay
+                            playsInline
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                            }}
+                            ref={(video) => {
+                                if (video) {
+                                    video.srcObject = localStream;
+                                }
+                            }}
+                        ></video>
+                    </div>
+                )}
 
-                <div className="d-flex justify-content-center" style={{ marginBottom: "20px" }}>
+                <div className="d-flex justify-content-center" style={{ margin: "10px", display: "flex", flexDirection: "row" }}>
                     <button
                         id="toggleVideo"
                         className="btn-circle control-button"
-                        onClick={() => toggleTrack("video")}
+                        onClick={() => toggleVideo()}
                         style={{
-                            backgroundColor: "#007bff",
+                            backgroundColor: videoState ? '#28a745' : '#dc3545',
                             color: "#fff",
                             border: "none",
                             borderRadius: "50%",
@@ -116,13 +121,14 @@ function CallRoom () {
                         }}
                     >
                         <i className="bi bi-camera-video-fill"></i>
+                        Camera
                     </button>
                     <button
                         id="toggleAudio"
                         className="btn-circle control-button"
-                        onClick={() => toggleTrack("audio")}
+                        onClick={() => toggleAudio()}
                         style={{
-                            backgroundColor: "#28a745",
+                            backgroundColor: audioState ? '#28a745' : '#dc3545',
                             color: "#fff",
                             border: "none",
                             borderRadius: "50%",
@@ -136,6 +142,7 @@ function CallRoom () {
                         }}
                     >
                         <i className="bi bi-mic-fill"></i>
+                        Audio
                     </button>
                 </div>
 

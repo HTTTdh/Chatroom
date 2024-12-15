@@ -1,2 +1,2 @@
-export const API = "http://192.168.1.3:8080/";
-export const WS = "ws://192.168.1.3:8080/ws";
+export const API = "http://172.20.1.74:8080/";
+export const WS = "ws://172.20.1.74:8080/ws";
