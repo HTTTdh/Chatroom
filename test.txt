@@ -1,0 +1,88 @@
+const handleSocketEvent = (eventName, callback) => socket.on(eventName, callback);
+
+handleSocketEvent("created", () => {
+    console.log("thiên lý ơi!");
+    navigator.mediaDevices
+        .getUserMedia(streamConstraints)
+        .then((stream) => {
+            localStream = stream;
+            localVideoRef.current.srcObject = stream;
+            isCaller = true;
+            setIsConnected(true); // Đảm bảo rằng người dùng đã kết nối
+    })
+        .catch((error) => {
+            console.error("Error accessing media devices.", error);
+            alert("Không thể truy cập thiết bị âm thanh/ hình ảnh.");
+    });
+});
+
+handleSocketEvent("connected", () => {
+    console.log("connected thiên lý ơi!");
+    navigator.mediaDevices
+        .getUserMedia(streamConstraints)
+        .then((stream) => {
+            localStream = stream;
+            localVideoRef.current.srcObject = stream;
+            isCaller = true;
+            setIsConnected(true); // Đảm bảo rằng người dùng đã kết nối
+    })
+        .catch((error) => {
+            console.error("Error accessing media devices.", error);
+            alert("Không thể truy cập thiết bị âm thanh/ hình ảnh.");
+    });
+});
+
+handleSocketEvent("joined", () => {
+    console.log("thiên lý ơi!");
+
+    navigator.mediaDevices
+        .getUserMedia(streamConstraints)
+        .then((stream) => {
+            localStream = stream;
+            localVideoRef.current.srcObject = stream;
+            socket.emit("ready", roomName);
+            setIsConnected(true); // Thông báo kết nối thành công
+    })
+        .catch((error) => {
+            console.error("Error accessing media devices.", error);
+            alert("Không thể truy cập thiết bị âm thanh/ hình ảnh.");
+    });
+});
+
+handleSocketEvent("ready", () => {
+    if (isCaller) {
+        rtcPeerConnection = new RTCPeerConnection(iceServers);
+        rtcPeerConnection.onicecandidate = (event) => {
+            if (event.candidate) {
+                socket.emit("candidate",
+                {
+                    type: "candidate",
+                    label: event.candidate.sdpMLineIndex,
+                    id: event.candidate.sdpMid,
+                    candidate: event.candidate.candidate,
+                    room: roomName,
+                });
+            }
+        };
+        rtcPeerConnection.ontrack = (event) => {
+            remoteStream = event.streams[
+                0
+            ];
+            remoteVideoRef.current.srcObject = remoteStream;
+        };
+        localStream.getTracks().forEach((track) => {
+            rtcPeerConnection.addTrack(track, localStream);
+        });
+        rtcPeerConnection
+            .createOffer()
+            .then((offer) => rtcPeerConnection.setLocalDescription(offer))
+            .then(() => {
+                socket.emit("offer",
+            {
+                    type: "offer",
+                    sdp: rtcPeerConnection.localDescription,
+                    room: roomName,
+            });
+        });
+    }
+});

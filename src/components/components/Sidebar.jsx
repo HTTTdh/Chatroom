@@ -109,7 +109,7 @@ function Sidebar({ info }) {
       <div className="sidebar-item">
         <button onClick={handleChat}>
           <i
-            class="far fa-comment"
+            className="far fa-comment"
             style={{ fontSize: "16px", color: "white" }}
           ></i>
           <p className="logoText">Chat</p>
@@ -128,7 +128,7 @@ function Sidebar({ info }) {
       <div className="sidebar-item">
         <button onClick={handleMyProfile}>
           <i
-            class="far fa-edit"
+            className="far fa-edit"
             style={{ fontSize: "16px", color: "white" }}
           ></i>
           <p className="logoText">Hồ sơ của tôi</p>

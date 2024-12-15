@@ -7,7 +7,7 @@ import "./style.css";
 import { API } from "../../ipConfig.js";
 import { useLastMessage } from "../../hooks/useLastMessages";
 
-function JoinedRooms({ userId }) {
+function JoinedRooms ({ userId }) {
   const containerRef = useRef(null);
   const { joinedRooms } = useRooms(userId);
   const [displayNames, setDisplayNames] = useState({});

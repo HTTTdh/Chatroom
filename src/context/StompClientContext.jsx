@@ -2,10 +2,10 @@ import { createContext, useContext } from "react";
 import { useState, useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import { useAuth } from "../hooks/useAuth";
+import { WS } from "../ipConfig";
 import { API } from "../ipConfig";
 
 const StompClientContext = createContext();
-import { WS } from "../ipConfig";
 export const StompClientProvider = ({ children }) => {
   const [stompClient, setStompClient] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -18,8 +18,6 @@ export const StompClientProvider = ({ children }) => {
       `${API}getLatestNotificationsByChatRoomIdAndUserId/` + userId
     );
     const data = await response.json();
-
-    console.log("data", data);
 
     // Cập nhật lastMessagesRef từ dữ liệu tải về
     lastMessagesRef.current = data.reduce((acc, room) => {

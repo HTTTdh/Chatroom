@@ -86,7 +86,6 @@ function ChatRoom() {
         console.error("Error fetching room data:", error);
       }
     };
-    console.log("sadd");
     fetchRoomData();
   }, [roomId]);
 
@@ -230,6 +229,10 @@ function ChatRoom() {
     setMemberEmail([]);
   };
 
+  const callVideo = () => {
+    navigate(`/call/${roomId}`);
+  }
+
   const handleCopyLink = () => {
     const link = window.location.href;
     const textArea = document.createElement("textarea");
@@ -261,8 +264,6 @@ function ChatRoom() {
   } else {
     return (
       <div className="home">
-        {/* <Noti message={notification} /> */}
-
         <Sidebar info={info}></Sidebar>
         <Form />
         <div className="connecting" hidden={stompClient.connected}>
@@ -274,13 +275,35 @@ function ChatRoom() {
             <h3>{name}</h3>
             <div className="group-items">
               <div className="icons">
-                <FaPhone
-                  size={22}
-                  color="#3092e9"
-                  className="img"
-                  style={{ transform: "scaleX(-1)" }}
-                />{" "}
-                <FaVideo size={25} color="#3092e9" className="img" />
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                  ref={buttonRef}
+                  onClick={callVideo}
+                >
+                  <FaPhone
+                    size={22}
+                    color="#3092e9"
+                    className="img"
+                    style={{ transform: "scaleX(-1)" }}
+                    />{" "}
+                </button>
+                <button
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                  ref={buttonRef}
+                  onClick={callVideo}
+                >
+                  <FaVideo size={25} color="#3092e9" className="img" />
+                  </button>
                 <button
                   style={{
                     backgroundColor: "transparent",

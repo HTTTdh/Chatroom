@@ -1,0 +1,21 @@
+[debug] [2024-12-02T13:56:29.381Z] ----------------------------------------------------------------------
+[debug] [2024-12-02T13:56:29.384Z] Command:       /opt/homebrew/Cellar/node/22.9.0_1/bin/node /opt/homebrew/bin/firebase init
+[debug] [2024-12-02T13:56:29.385Z] CLI Version:   13.27.0
+[debug] [2024-12-02T13:56:29.385Z] Platform:      darwin
+[debug] [2024-12-02T13:56:29.385Z] Node Version:  v22.9.0
+[debug] [2024-12-02T13:56:29.386Z] Time:          Mon Dec 02 2024 20:56:29 GMT+0700 (Indochina Time)
+[debug] [2024-12-02T13:56:29.386Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-12-02T13:56:29.394Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-12-02T13:56:29.394Z] > authorizing via signed-in user (dinhbaochauthi99@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/chauthi/Documents/Products/Chatroom
+

@@ -12,4 +12,5 @@ export default defineConfig({
     // cors: true,
   },
   plugins: [react()],
+  optimizeDeps: { exclude: ["fsevents"] },
 });
