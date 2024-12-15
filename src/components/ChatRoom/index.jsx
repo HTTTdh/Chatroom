@@ -179,7 +179,7 @@ function ChatRoom() {
       console.log("Request URL:", url);
 
       if (finalResponse.ok) {
-        setNotification("Đã thêm thành viên nhóm thành công!");
+        // setNotification("Đã thêm thành viên nhóm thành công!");
         closeOverlay();
         navigate(`/chat/${roomId}`);
       } else {
@@ -261,7 +261,7 @@ function ChatRoom() {
   } else {
     return (
       <div className="home">
-        <Noti message={notification} />
+        {/* <Noti message={notification} /> */}
 
         <Sidebar info={info}></Sidebar>
         <Form />
