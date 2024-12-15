@@ -64,9 +64,10 @@ function Sidebar({ info }) {
     }
     const result = await onCreateRoom(formData);
     if (result) {
+      console.log(result);
       setNotification("Room created successfully!");
       closeOverlay();
-      navigate("/");
+      navigate(`/chat/${result.id}`);
     } else {
       setNotification("Error creating room. Please try again later.");
     }

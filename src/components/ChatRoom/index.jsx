@@ -161,7 +161,7 @@ function ChatRoom() {
 
       if (addMemberResponse.ok) {
         setNotification("Member added successfully!");
-        navigate("/");
+        navigate(`/chat/${roomId}`);
       } else {
         setNotification("Failed to add member.");
         console.error("Add member response error:", rawResponseText);
@@ -181,7 +181,7 @@ function ChatRoom() {
       if (finalResponse.ok) {
         setNotification("Đã thêm thành viên nhóm thành công!");
         closeOverlay();
-        navigate("/");
+        navigate(`/chat/${roomId}`);
       } else {
         setNotification("Có lỗi xảy ra khi thêm thành viên vào nhóm.");
       }

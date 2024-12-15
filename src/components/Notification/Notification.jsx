@@ -33,6 +33,7 @@ const MyNotification = ({ user }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [roomNames, setRoomNames] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoomData = async (chatRoomId) => {
@@ -115,6 +116,10 @@ const MyNotification = ({ user }) => {
                   className={`notification-item ${
                     notification.isRead ? "read" : "unread"
                   }`}
+                  onClick={() => {
+                    console.log("Clicked!");
+                    navigate(`/chat/${notification.chatRoomId}`);
+                  }}
                 >
                   <img
                     src={notification.sender.photoURL}

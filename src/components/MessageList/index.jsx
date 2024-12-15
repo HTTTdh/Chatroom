@@ -120,7 +120,7 @@ function MessageList({ roomId, userId }) {
 
       if (addMemberResponse.ok) {
         setNotification("Member added successfully ");
-        navigate("/");
+        navigate(`/chat/${room}`);
       } else {
         setNotification("Failed to add member.");
       }
