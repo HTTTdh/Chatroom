@@ -21,7 +21,8 @@ function ChatRoom() {
   const [showConfirmation, setShowConfirmation] = useState();
   const { stompClient } = useStompClient();
   const info = useAuth();
-  const userID = info.user.uid;
+  // const userID = info.user.uid;
+  const [userID, setUserID] = useState("");
   const [messages, setMessages] = useState([]);
   const [isframe, setFrame] = useState(false);
   const roomId = useParams()["roomId"];
@@ -88,6 +89,10 @@ function ChatRoom() {
     console.log("sadd");
     fetchRoomData();
   }, [roomId]);
+
+  useEffect(() => {
+    if (info.user != null) setUserID(info.user.uid);
+  }, [info.user]);
 
   const handleLeaveGroup = async () => {
     try {
@@ -204,12 +209,6 @@ function ChatRoom() {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
-
-  useEffect(() => {
-    if (!info.user) {
-      navigate("/");
-    }
-  }, [info.user]);
 
   const openFrame = () => {
     setFrame(true);
@@ -417,13 +416,14 @@ function ChatRoom() {
               </div>
             </div>
           )}
-
           {linkCopied && (
             <div className="copied-notification">
               Liên kết đã được sao chép!
             </div>
           )}
-          <MessageList roomId={roomId} userId={info.user.uid}></MessageList>
+          {userID && (
+            <MessageList roomId={roomId} userId={userID}></MessageList>
+          )}
           <MessageInput roomId={roomId} addMessage={addMessage}></MessageInput>
         </div>
       </div>
