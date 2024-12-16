@@ -5,7 +5,7 @@ import * as spdCompact from 'sdp-compact';
 const WebRTCContext = createContext();
 
 export const WebRTCProvider = ({ children }) => {
-    const signalingServerUrl = "ws://172.20.1.74:8080/signaling";
+    const signalingServerUrl = "ws://localhost:8080/signaling";
     const peerConnections = useRef({});
     const [active, setActive] = useState(false);
     const [localStream, setLocalStream] = useState(null);
@@ -68,6 +68,7 @@ export const WebRTCProvider = ({ children }) => {
 
     const openLocalStream = async () => {
         if (!localStream) {
+            console.log("check:" + navigator.mediaDevices);
             const ls = await navigator.mediaDevices.getUserMedia({
                 video: true,
                 audio: true,
@@ -77,6 +78,7 @@ export const WebRTCProvider = ({ children }) => {
         }
         return localStream;
     }
+
 
     // Gửi tin nhắn signaling đến server
     function sendMessage (message) {
